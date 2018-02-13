@@ -11,7 +11,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 * Trigger an IBM Cloud Function with a webhook
 * Interact with the Github API
 
-![](doc/source/images/architecture.png)
+![](docs/source/images/architecture.png)
 
 ## Flow
 1. User sets up OpenWhisk actions
@@ -28,7 +28,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 * [Serverless](https://www.ibm.com/cloud-computing/bluemix/openwhisk): An event-action platform that allows you to execute code in response to an event.
 
 # Watch the Video
-[![](http://img.youtube.com/vi/Jxi7U7VOMYg/0.jpg)](https://www.youtube.com/watch?v=Jxi7U7VOMYg)
+[![](http://img.youtube.com/vi/zvFJFNvrOa8/0.jpg)](https://www.youtube.com/watch?v=zvFJFNvrOa8)
 
 # Steps
 
@@ -55,7 +55,18 @@ $ curl -u [yourGithubID]:[yourGithubToken] -H "Accept: application/vnd.github.in
 
 Scroll through this list to find the ID of the Project you just created.  Make note of this.
 
-You will also need the CLI for IBM Cloud Functions.  Installation instructions can be found [here](https://console.bluemix.net/docs/openwhisk/bluemix_cli.html#cloudfunctions_cli)
+
+### 2. Clone the repo
+
+Clone the `Github-Project-Automation-with-OpenWhisk` repository locally. In a terminal, run:
+
+```
+$ git clone https://github.com/IBM/Github-Project-Automation-with-OpenWhisk
+```
+and then go ahead and move into that directory:
+```
+$ cd Github-Project-Automation-with-OpenWhisk
+```
 
 ### 3. New Card Creation
 
@@ -69,22 +80,23 @@ Find your prefered column, and keep track of it:
 $ export COLUMN_ID=[yourColumnId]
 ```
 
-IBM Cloud Functions already has a package for using Github event streams to create Triggers.  First, we will need to bind it:
+We will be using the IBM Cloud web UI to create our Trigger and Action.  From the Cloud Functions section, select 'Triggers' from the menu on the left, and then click the 'Create' button.  After selecting the 'Create Trigger' option, you should see this screen:
 
-```
-$ bx wsk package bind /whisk.system/github myGit \
- --param username [yourGithubID] \
- --param repository [yourGithubRepo] \
- --param accessToken $GIT_TOKEN
-```
+![](docs/source/images/connecttrigger.png)
 
-Then create the Trigger, Action, and Rule
+You can see the kinds of Triggers that IBM Cloud Functions can set up for you.  We are, of course, interested in the Github type.  Click it, and you will be promted for a Trigger name (e.g. myNewCardTrigger), your access token that we obtained in the first step, your Github username, and the repository in question.  Alternately, you can click the 'Get Access Token' button, which will have you autentiate against Github and will then fill out you Username and prepopulate the 'Repository' field wiht a list of repositorities to which your Github account has access.  Finally, the events we would like to watch for our tigger are `issues`.
 
-```
-$ bx wsk trigger create myNewCardTrigger --feed myGit/webhook --param events issues
-$ bx wsk action create myNewCardAction newCard.js --param gitUsername [yourGithubID] --param gitPersonalToken $GIT_TOKEN --param columnId $COLUMN_ID
-$ bx wsk rule create myNewCardRule myNewCardTrigger myNewCardAction
-```
+![](docs/source/images/connecttrigger2.png)
+
+Click 'create' and you are ready to connect an action to your Trigger.  From the following page click 'Add' in the upper right corner.  Then give your Action a name (e.g. myNewCardAction), and click 'Create & Add'
+
+![](docs/source/images/addaction.png)
+
+Now that we've connected and created our Action, we had better add some content to it!  Click the name of your recently created Action from the list, and on the following page, copy and paste the contents of [newCard.js](newCard.js).
+
+![](docs/source/images/newaction.png)
+
+Click 'Save'.  Any issues now created in your repositry will show up on your project board.
 
 ### 4. Send Slack Alert
 
@@ -95,7 +107,17 @@ You will also need to set up the 'Incoming Webook' app in your instance of Slack
 export SLACK_WEBHOOK=https://hooks.slack.com/services/AAA/BBB/CCC
 ```
 
-We are going to piggyback on the package binding we created earlier, so we'll just need to create the Trigger, Action, and Rule for this exercise with:
+In the previous example we used the IBM Cloud web UI to create our triggers and actions.  This time we will demonstrate how to do the same thing using the IBM Cloud Functions CLI.  Installation instructions for the CLI can be found [here](https://console.bluemix.net/docs/openwhisk/bluemix_cli.html#cloudfunctions_cli)
+You have seen that IBM Cloud Functions already has a package for using Github event streams to create Triggers.  When using the CLI, though, we will first need to bind it:
+
+```
+$ bx wsk package bind /whisk.system/github myGit \
+ --param username [yourGithubID] \
+ --param repository [yourGithubRepo] \
+ --param accessToken $GIT_TOKEN
+```
+
+To create the Trigger, Action, and Rule using the Bluemix CLI:
 ```
 $ bx wsk trigger create myUpdateIssueTrigger --feed myGit/webhook --param events issues
 $ bx wsk action create myUpdateIssueAction updateIssue.js --param gitUsername [yourGithubID] --param gitPersonalToken $GIT_TOKEN --param slackWebhook $SLACK_WEBHOOK
