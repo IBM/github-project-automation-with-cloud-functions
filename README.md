@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/IBM/watson-banking-chatbot.svg?branch=master)](https://travis-ci.org/IBM/watson-banking-chatbot)
-![IBM Cloud Deployments](https://metrics-tracker.mybluemix.net/stats/527357940ca5e1027fbf945add3b15c4/badge.svg)
+[![Build Status](https://travis-ci.org/IBM/github-project-automation-with-openwhisk.svg?branch=master)](https://travis-ci.org/IBM/github-project-automation-with-openwhisk)
 
 # Github Project automation with OpenWhisk
 
