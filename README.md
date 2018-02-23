@@ -125,7 +125,7 @@ $ bx wsk rule create myUpdateIssueRule myUpdateIssueTrigger myUpdateIssueAction
 
 ### 5. Add new repository
 
-For our final example, we are going to create an action that creates a new repository in the same Github organization in which our Project exists.  We will also set up several additional actions to populate the newly create repository with some files.
+For our final example, we are going to create an action that creates a new repository in the same Github organization in which our Project exists.  We will also set up several additional actions to populate the newly create repository with some files.  For starters, if you are not already using one, you will need an organization in github.  (This is different from using your personal directory.  You can invite other users to an organization.)  Our first action will be watching the event stream of a project, looking for properties of an issue that indicate a repo should be created.  Its response will then be to create a repo with in the organizaion.  Our second group of actions (that are in the [addFiles](addFiles) directory) are watching on the organization level for newly created repos.  Their response is to then create a set of files in that new repository.  This is useful in project automation because there are often files, like a README.md or LICENSE file, that new repositories will always require.
 
 We can use the same trigger for multiple actions:
 
