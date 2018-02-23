@@ -81,19 +81,19 @@ $ export COLUMN_ID=[yourColumnId]
 
 We will be using the IBM Cloud web UI to create our Trigger and Action.  From the Cloud Functions section, select 'Triggers' from the menu on the left, and then click the 'Create' button.  After selecting the 'Create Trigger' option, you should see this screen:
 
-![](docs/source/images/connecttrigger.png)
+<img src="docs/source/images/connecttrigger.png" width="700">
 
 You can see the kinds of Triggers that IBM Cloud Functions can set up for you.  We are, of course, interested in the Github type.  Click it, and you will be promted for a Trigger name (e.g. myNewCardTrigger), your access token that we obtained in the first step, your Github username, and the repository in question.  Alternately, you can click the 'Get Access Token' button, which will have you autentiate against Github and will then fill out you Username and prepopulate the 'Repository' field wiht a list of repositorities to which your Github account has access.  Finally, the events we would like to watch for our tigger are `issues`.
 
-![](docs/source/images/connecttrigger2.png)
+<img src="docs/source/images/connecttrigger2.png" width="700">
 
 Click 'create' and you are ready to connect an action to your Trigger.  From the following page click 'Add' in the upper right corner.  Then give your Action a name (e.g. myNewCardAction), and click 'Create & Add'
 
-![](docs/source/images/addaction.png)
+<img src="docs/source/images/addaction.png" width="700">
 
 Now that we've connected and created our Action, we had better add some content to it!  Click the name of your recently created Action from the list, and on the following page, copy and paste the contents of [newCard.js](newCard.js).
 
-![](docs/source/images/newaction.png)
+<img src="docs/source/images/newaction.png" width="700">
 
 Click 'Save'.  Any issues now created in your repositry will show up on your project board.
 
